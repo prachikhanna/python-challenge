@@ -6,11 +6,8 @@ output_file_path=os.path.join("Resources","output_data.txt")
 
 with open(budget_file_path) as budget_file:
     budget_reader=csv.reader(budget_file,delimiter=",")
-    print(budget_reader)
-
     csv_header = next(budget_reader)
 
-    print(f"CSV Header: {csv_header}")
     row_count=0
     row_sum=0
     netprofitLoss=0
@@ -20,6 +17,8 @@ with open(budget_file_path) as budget_file:
     greatestDecrease=0
     totalProfit=0
     totalLoss=0
+    increaseDate=""
+    decreaseDate=""
     sum=0
     for row in budget_reader:
         row_count = row_count + 1 
@@ -33,22 +32,21 @@ with open(budget_file_path) as budget_file:
         previousNumber=int(row[1])
         if currDiff > greatestIncrease:
             greatestIncrease=currDiff
+            increaseDate=row[0]
         if currDiff < greatestDecrease:
             greatestDecrease=currDiff
+            decreaseDate=row[0]
         if int(row[1]) >= 0:
            totalProfit = totalProfit + int(row[1])
         else:
             totalLoss = totalLoss + int(row[1]) 
-    print(sum)                  
     print("Financial Analysis")
     print("----------------------------")   
     print("Total Months: " + str(row_count))
     print("Total : $" + str(row_sum))
     print("Average  Change: $" + str(round(sum/(row_count-1),2)) )  
-    print("Greatest Increase in Profits: ($" + str(greatestIncrease)+ ")")   
-    print("Greatest Decrease in Profits: ($" + str(greatestDecrease) + ")")   
-
-    print(netprofitLoss,greatestIncrease,greatestDecrease,totalProfit,totalLoss)   
+    print("Greatest Increase in Profits: " + increaseDate + " ($" + str(greatestIncrease)+ ")")   
+    print("Greatest Decrease in Profits: " + decreaseDate +" ($" + str(greatestDecrease) + ")")   
 
 with open(output_file_path,"w") as output_file:
         output_file.write("Financial Analysis\n")
@@ -56,5 +54,5 @@ with open(output_file_path,"w") as output_file:
         output_file.write("Total Months:" + str(row_count) + "\n")
         output_file.write("Total : $" + str(row_sum) + "\n")    
         output_file.write("Average Change: $" + str(round(sum/(row_count-1),2)) + "\n")  
-        output_file.write("Greatest Increase in Profits: ($" + str(greatestIncrease)+ ")" + "\n")   
-        output_file.write("Greatest Decrease in Profits: ($" + str(greatestDecrease) + ")" + "\n") 
+        output_file.write("Greatest Increase in Profits: " + increaseDate + " ($" + str(greatestIncrease)+ ")" + "\n")   
+        output_file.write("Greatest Decrease in Profits: " + decreaseDate + " ($" + str(greatestDecrease) + ")" + "\n") 
