@@ -2,7 +2,7 @@ import os
 import csv
 
 vote_file_path = os.path.join("Resources","election_data.csv")
-output_file_path = os.path.join("Resources","output_data.csv")
+output_file_path = os.path.join("Resources","output_data.txt")
 
 count_row=0
 name_list=[]
@@ -16,10 +16,8 @@ with open(vote_file_path) as vote_file:
     for row in csv_reader:
         count_row=count_row+1
         candidate_name=row[2]
-        # print(candidate_name)
         if candidate_name in name_list:
             candidate_list["Candidate"]=name_list
-            # candidate_list["VoteCount"]=candidate_list["VoteCount"]+1
             i=name_list.index(candidate_name)
             vote_count[i]=vote_count[i]+1
             candidate_list["VoteCount"]=vote_count
@@ -43,9 +41,11 @@ with open(output_file_path,"w") as output_data:
     i=0
     for name in name_list:
         VotePercent=(candidate_list["VoteCount"][i]/count_row)*100
-        output_data.write(name + ": " + str(round(VotePercent,3)) + "% " + "(" + str(candidate_list["VoteCount"][i]) + ")\n")
-        print(name + ": " + str(round(VotePercent,3)) + "% " + "(" + str(candidate_list["VoteCount"][i]) + ")")    
+        x = str("%.3f" % round(VotePercent,3))
+        output_data.write(name + ": " + x + "% " + "(" + str(candidate_list["VoteCount"][i]) + ")\n")
+        print(name + ": " + x + "% " + "(" + str(candidate_list["VoteCount"][i]) + ")")    
         i=i+1
+ 
 
     index=candidate_list["VoteCount"].index(max(candidate_list["VoteCount"]))
     output_data.write("-------------------------\n")
@@ -54,6 +54,3 @@ with open(output_file_path,"w") as output_data:
     print("Winner: "  + name_list[index] )    
     output_data.write("-------------------------\n")
     print("-------------------------")
-
-
-     
